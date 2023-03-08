@@ -9,41 +9,72 @@ import ca.frousseau.lieux.data.LieuxVisitesDao
 import ca.frousseau.lieux.model.Lieu
 import ca.frousseau.lieux.model.LieuVisite
 
+/**
+ * ViewModel de la liste des lieux visités
+ */
 class LieuxVisitesViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val lieuxVisitesDao : LieuxVisitesDao = LieuDatabase.getInstace(application).lieuxVisiteDao()
-    private val _lieuxVisites = MutableLiveData<List<Lieu>>()
-    val lieuxVisites: LiveData<List<Lieu>> = _lieuxVisites
+    private val lieuxVisitesDao: LieuxVisitesDao =
+        LieuDatabase.getInstace(application).lieuxVisiteDao() // DAO des lieux visités
 
-    init {
-        _lieuxVisites.value = lieuxVisitesDao.getAllLieuxVisites().value
-    }
-
-    fun insertLieuVisite(lieuVisite: LieuVisite){
+    /**
+     * Insertion d'un lieu visité
+     * @param lieuVisite Le lieu visité à insérer
+     */
+    fun insertLieuVisite(lieuVisite: LieuVisite) {
         lieuxVisitesDao.insertLieuVisite(lieuVisite)
     }
 
-    fun insertLieuVisiteReturnId(lieuVisite: LieuVisite): Long{
+    /**
+     * Insertion d'un lieu visité et retourne son id
+     * @param lieuVisite Le lieu visité à insérer
+     * @return L'id du lieu visité inséré
+     */
+    fun insertLieuVisiteReturnId(lieuVisite: LieuVisite): Long {
         return lieuxVisitesDao.insertLieuVisiteReturnId(lieuVisite)
     }
 
-    fun insertLieuxVisites(lieuxVisites: List<LieuVisite>): List<Long>{
+    /**
+     * Insertion d'une liste de lieux visités
+     * @param lieuxVisites La liste de lieux visités à insérer
+     * @return La liste des ids des lieux visités insérés
+     */
+    fun insertLieuxVisites(lieuxVisites: List<LieuVisite>): List<Long> {
         return lieuxVisitesDao.insertLieuxVisites(lieuxVisites)
     }
 
-    fun updateLieuVisite(lieuVisite: LieuVisite){
+    /**
+     * Vérifie si un lieu est visité
+     * @param lieuId L'id du lieu à vérifier
+     * @return True si le lieu est visité, false sinon
+     */
+    fun isLieuVisite(lieuId: Int): Boolean {
+        return lieuxVisitesDao.isLieuVisite(lieuId)
+    }
+
+    /**
+     * Modifier un lieu visité
+     * @param lieuVisite Le lieu visité à modifier
+     */
+    fun updateLieuVisite(lieuVisite: LieuVisite) {
         lieuxVisitesDao.updateLieuVisite(lieuVisite)
     }
 
-    fun deleteLieuVisite(lieuVisite: LieuVisite){
-        lieuxVisitesDao.deleteLieuVisite(lieuVisite)
+    /**
+     * Supprimer un lieu visité par le id du lieu
+     * @param lieuId L'id du lieu à supprimer
+     */
+    fun deleteLieuVisite(lieuId: Int) {
+        lieuxVisitesDao.deleteLieuVisiteByLieuId(lieuId)
     }
 
-    fun getAllLieuxVisites(): LiveData<List<Lieu>>{
+    /**
+     * Retourne tous les lieux visités
+     * @return La liste des lieux visités sous forme de LiveData
+     */
+    fun getAllLieuxVisites(): LiveData<List<Lieu>> {
         return lieuxVisitesDao.getAllLieuxVisites()
     }
-
-
 
 
 }

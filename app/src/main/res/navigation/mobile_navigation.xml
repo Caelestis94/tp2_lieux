@@ -9,16 +9,16 @@
         android:id="@+id/navigation_home"
         android:name="ca.frousseau.lieux.ui.lieux.LieuxFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_lieux" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="ca.frousseau.lieux.ui.lieuxVisites.LieuxVisitesFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_lieux_visites" />
     <fragment
         android:id="@+id/fragment_parametres"
-        android:name="ca.frousseau.lieux.fragment_parametres"
+        android:name="ca.frousseau.lieux.ParametresFragment"
         android:label="Paramètres" />
     <action android:id="@+id/action_global_fragment_parametres" app:destination="@id/fragment_parametres" />
 

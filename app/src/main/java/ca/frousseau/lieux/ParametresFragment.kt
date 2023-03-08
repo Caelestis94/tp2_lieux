@@ -3,11 +3,9 @@ package ca.frousseau.lieux
 import android.os.Bundle
 import android.widget.Toast
 import androidx.preference.PreferenceFragmentCompat
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.preference.SwitchPreferenceCompat
 
-class fragment_parametres : PreferenceFragmentCompat() {
+class ParametresFragment : PreferenceFragmentCompat() {
 
     lateinit var isAdmin : SwitchPreferenceCompat
 

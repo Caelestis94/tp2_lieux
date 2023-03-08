@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -14,12 +15,13 @@ import androidx.navigation.ui.setupWithNavController
 import ca.frousseau.lieux.data.LieuDatabase
 import ca.frousseau.lieux.databinding.ActivityMainBinding
 import ca.frousseau.lieux.model.Lieu
+import ca.frousseau.lieux.ui.lieux.LieuxViewModel
+import ca.frousseau.lieux.ui.lieuxVisites.LieuxVisitesViewModel
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,18 +52,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle item selection
         return when (item.itemId) {
             R.id.settings -> {
-                // launch fragment
                 findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.fragment_parametres)
-
                 true
-
             }
             else -> super.onOptionsItemSelected(item)
         }
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -69,13 +66,19 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
+    /**
+     * Fonction qui permet de mettre à jour un lieu dans la base de données
+     * ou de l'ajouter s'il est nouveau
+     * @param lieu Le lieu à mettre à jour
+     * @param new Si le lieu est nouveau ou non
+     */
     fun updateLieu(lieu: Lieu, new: Boolean) {
-        val lieuDao = LieuDatabase.getInstace(this).lieuDao()
+        var lieuxViewModel = ViewModelProvider(this).get(LieuxViewModel::class.java)
         thread {
             if (new) {
-                lieuDao.insertLieu(lieu)
+                lieuxViewModel.insertLieu(lieu)
             } else {
-                lieuDao.updateLieu(lieu)
+                lieuxViewModel.updateLieu(lieu)
             }
         }
         if (new) {

@@ -11,32 +11,28 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import ca.frousseau.lieux.model.Lieu
 
-class LieuAdapter(private val lieux: List<Lieu>) : RecyclerView.Adapter<LieuAdapter.LieuViewHolder>() {
+class LieuAdapter(private var lieux: List<Lieu>) :
+    RecyclerView.Adapter<LieuAdapter.LieuViewHolder>() {
 
-    lateinit var listener : onItemClickListenerInterface
+    lateinit var listener: onItemClickListenerInterface
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LieuViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.lieu_one_line, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.lieu_one_line, parent, false)
         return LieuViewHolder(view)
     }
 
+
     interface onItemClickListenerInterface {
-        fun onItemClick(itemView: View?,position: Int)
-//        fun onItemLongClickListener(itemView: View?, position: Int)
+        fun onItemClick(itemView: View?, position: Int)
         fun onItemDeleteClickListener(position: Int)
-        fun onItemEditClickListener(itemView: View?,position: Int)
+        fun onItemEditClickListener(itemView: View?, position: Int)
 
     }
 
     fun setOnItemClickListener(listener: onItemClickListenerInterface) {
         this.listener = listener
     }
-
-
-
-
-
-
 
     override fun onBindViewHolder(holder: LieuViewHolder, position: Int) {
         val lieu: Lieu = lieux[position]
@@ -46,8 +42,19 @@ class LieuAdapter(private val lieux: List<Lieu>) : RecyclerView.Adapter<LieuAdap
         holder.image.setImageURI(lieu.image.toUri())
     }
 
+    /**
+     * Retourne le nombre d'éléments dans la liste
+     */
     override fun getItemCount(): Int {
         return lieux.size
+    }
+
+    /**
+     * Met à jour la liste des lieux et notifie le changement
+     */
+    fun updateAdapter(lieux: List<Lieu>) {
+        this.lieux = lieux
+        notifyDataSetChanged()
     }
 
     inner class LieuViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -59,26 +66,27 @@ class LieuAdapter(private val lieux: List<Lieu>) : RecyclerView.Adapter<LieuAdap
         init {
             itemView.setOnClickListener {
                 val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION){
+                if (position != RecyclerView.NO_POSITION) {
                     listener.onItemClick(itemView, position)
                 }
             }
             itemView.setOnCreateContextMenuListener { menu, v, menuInfo ->
-                val admin = PreferenceManager.getDefaultSharedPreferences(itemView.context).getBoolean("isAdmin",false)
-                if (!admin){
+                val admin = PreferenceManager.getDefaultSharedPreferences(itemView.context)
+                    .getBoolean("isAdmin", false) // vérifie si l'utilisateur est admin
+                if (!admin) {
                     return@setOnCreateContextMenuListener
                 }
                 val position = adapterPosition
-                val edit = menu.add(0,v.id,0,R.string.action_modifier)
-                val delete = menu.add(0,v.id,0,R.string.action_supprimer)
+                val edit = menu.add(0, v.id, 0, R.string.action_modifier)
+                val delete = menu.add(0, v.id, 0, R.string.action_supprimer)
                 edit.setOnMenuItemClickListener {
-                    if (position != RecyclerView.NO_POSITION){
+                    if (position != RecyclerView.NO_POSITION) {
                         listener.onItemEditClickListener(itemView, position)
                     }
                     false
                 }
                 delete.setOnMenuItemClickListener {
-                    if (position != RecyclerView.NO_POSITION){
+                    if (position != RecyclerView.NO_POSITION) {
                         listener.onItemDeleteClickListener(position)
                     }
                     false

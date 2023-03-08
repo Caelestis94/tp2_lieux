@@ -8,49 +8,76 @@ import ca.frousseau.lieux.data.LieuDao
 import ca.frousseau.lieux.data.LieuDatabase
 import ca.frousseau.lieux.model.Lieu
 
+/**
+ * ViewModel pour la liste des lieux
+ */
 class LieuxViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val lieuDao : LieuDao = LieuDatabase.getInstace(application).lieuDao()
-    private val _lieux = MutableLiveData<List<Lieu>>()
-    val lieux: LiveData<List<Lieu>> = _lieux
+    private val lieuDao: LieuDao = LieuDatabase.getInstace(application).lieuDao()
 
-    init {
-        _lieux.value = lieuDao.getAllLieux().value
-    }
-
-
-
-
-
-    fun insertLieu(lieu: Lieu){
+    /**
+     * Insertion d'un lieu
+     * @param lieu Le lieu à insérer
+     */
+    fun insertLieu(lieu: Lieu) {
         lieuDao.insertLieu(lieu)
     }
 
-    fun insertLieuReturnId(lieu: Lieu): Long{
+    /**
+     * Insertion d'un lieu et retourne son id
+     * @param lieu Le lieu à insérer
+     * @return L'id du lieu inséré
+     */
+    fun insertLieuReturnId(lieu: Lieu): Long {
         return lieuDao.insertLieuReturnId(lieu)
     }
 
-    fun getAllLieux(): LiveData<List<Lieu>>{
+    /**
+     * Retourne tous les lieux de la base de données
+     * @return La liste des lieux
+     */
+    fun getAllLieux(): LiveData<List<Lieu>> {
         return lieuDao.getAllLieux()
     }
 
-    fun getLieuById(id: Int): LiveData<Lieu>{
+    /**
+     * Retourne un lieu de la base de données
+     * @param id L'id du lieu à retourner
+     * @return Le lieu
+     */
+    fun getLieuById(id: Int): LiveData<Lieu> {
         return lieuDao.getLieuById(id)
     }
 
-    fun deleteAllLieux(){
+    /**
+     * Supprime tous les lieux de la base de données
+     */
+    fun deleteAllLieux() {
         lieuDao.deleteAllLieux()
     }
 
-    fun deleteLieu(lieu: Lieu){
+    /**
+     * Supprime un lieu de la base de données
+     * @param lieu Le lieu à supprimer
+     */
+    fun deleteLieu(lieu: Lieu) {
         lieuDao.deleteLieu(lieu)
     }
 
-    fun updateLieu(lieu: Lieu){
+    /**
+     * Met à jour un lieu dans la base de données
+     * @param lieu Le lieu à mettre à jour
+     */
+    fun updateLieu(lieu: Lieu) {
         lieuDao.updateLieu(lieu)
     }
 
-    fun insertLieux(lieux: List<Lieu>): List<Long>{
+    /**
+     * Insertion d'une liste de lieux
+     * @param lieux La liste de lieux à insérer
+     * @return La liste des ids des lieux insérés
+     */
+    fun insertLieux(lieux: List<Lieu>): List<Long> {
         return lieuDao.insertLieux(lieux)
     }
 

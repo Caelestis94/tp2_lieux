@@ -7,9 +7,10 @@
     tools:context=".ui.lieuxVisites.LieuxVisitesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/liste_visites"
+        android:id="@+id/rv_lieux_visites"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

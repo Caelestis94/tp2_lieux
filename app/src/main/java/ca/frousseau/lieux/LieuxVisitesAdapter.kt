@@ -9,13 +9,15 @@ import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import ca.frousseau.lieux.model.Lieu
 
-class LieuxVisitesAdapter (private val lieuxVisites: List<Lieu>): RecyclerView.Adapter<LieuxVisitesAdapter.VisiteViewHolder>(){
+class LieuxVisitesAdapter(private var lieuxVisites: List<Lieu>) :
+    RecyclerView.Adapter<LieuxVisitesAdapter.VisiteViewHolder>() {
 
-    lateinit var listener : onItemClickListenerInterface
+    lateinit var listener: onItemClickListenerInterface
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VisiteViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.lieu_one_line, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.lieu_one_line, parent, false)
         return VisiteViewHolder(view)
     }
 
@@ -24,7 +26,7 @@ class LieuxVisitesAdapter (private val lieuxVisites: List<Lieu>): RecyclerView.A
     }
 
     interface onItemClickListenerInterface {
-        fun onItemClick(itemView: View?,position: Int)
+        fun onItemClick(itemView: View?, position: Int)
     }
 
     override fun onBindViewHolder(holder: VisiteViewHolder, position: Int) {
@@ -35,8 +37,19 @@ class LieuxVisitesAdapter (private val lieuxVisites: List<Lieu>): RecyclerView.A
         holder.image.setImageURI(lieuVisite.image.toUri())
     }
 
+    /**
+     * Retourne le nombre d'éléments dans la liste
+     */
     override fun getItemCount(): Int {
         return lieuxVisites.size
+    }
+
+    /**
+     * Met à jour la liste des lieux et notifie le changement
+     */
+    fun updateAdapter(lieuxVisites: List<Lieu>) {
+        this.lieuxVisites = lieuxVisites
+        notifyDataSetChanged()
     }
 
     inner class VisiteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -48,7 +61,7 @@ class LieuxVisitesAdapter (private val lieuxVisites: List<Lieu>): RecyclerView.A
         init {
             itemView.setOnClickListener {
                 val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION){
+                if (position != RecyclerView.NO_POSITION) {
                     listener.onItemClick(itemView, position)
                 }
             }
